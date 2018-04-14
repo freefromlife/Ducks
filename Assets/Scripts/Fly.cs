@@ -18,7 +18,7 @@ public class Fly : MonoBehaviour
     public GameObject SC;
     public float speed;
     public float Score = 1;
-    private GameObject destination;
+    public GameObject destination;
     private bool alive = true;
 
 

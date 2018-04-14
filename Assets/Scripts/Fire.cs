@@ -3,22 +3,25 @@ using System.Collections;
 
 public class Fire : MonoBehaviour
 {
-
+    public bool gameoverflag;
     public float speed = 10; // скорость пули
     public Rigidbody2D bullet; // префаб нашей пули
     public Transform gunPoint; // точка рождения
     public float fireRate = 1; // скорострельность
     private float curTimeout;
+    
 
     void Start()
     {
+
     }
 
  
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        gameoverflag = FindObjectOfType<BallonHealth>().gameoverflag;
+        if (Input.GetMouseButton(0) && gameoverflag==false)
         {
             CreateBullet();
         }
