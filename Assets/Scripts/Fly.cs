@@ -9,17 +9,15 @@ public class Fly : MonoBehaviour
     [SerializeField]
     public GameObject OutOfScreenSpot;
     [SerializeField]
-    private SpriteRenderer mySpriteRenderer;
+    public SpriteRenderer mySpriteRenderer;
     [SerializeField]
-    private Animator myAnimator;
+    public Animator myAnimator;
     [SerializeField]
-    private Rigidbody2D myRigit;
-    [SerializeField]
-    public GameObject SC;
+    public Rigidbody2D myRigit;
     public float speed;
     public float Score = 1;
     public GameObject destination;
-    private bool alive = true;
+    public bool alive = true;
 
 
 
@@ -36,14 +34,7 @@ public class Fly : MonoBehaviour
 
     }
     void OnTriggerEnter2D(Collider2D coll)
-    { if (coll.tag == "Bullet")
-        {
-            alive = false;
-            myAnimator.Play("Die");
-            myRigit.gravityScale = 2;
-            Destroy(gameObject, 5);
-            SC.GetComponent<ScoreCounter>().TakeScore(Score * Mathf.RoundToInt(speed));
-        }
+    { 
         if (coll.tag == "Ballon" && alive == true)
         {
             destination = OutOfScreenSpot;

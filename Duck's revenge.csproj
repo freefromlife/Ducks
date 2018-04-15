@@ -82,10 +82,12 @@
     <Compile Include="Assets\Scripts\BagsHelper.cs" />
     <Compile Include="Assets\Scripts\BallonHealth.cs" />
     <Compile Include="Assets\Scripts\BulletDestroy.cs" />
+    <Compile Include="Assets\Scripts\DataControl.cs" />
     <Compile Include="Assets\Scripts\Fire.cs" />
     <Compile Include="Assets\Scripts\Fly.cs" />
     <Compile Include="Assets\Scripts\GameOverMenu.cs" />
     <Compile Include="Assets\Scripts\MenuControls.cs" />
+    <Compile Include="Assets\Scripts\Player Progress.cs" />
     <Compile Include="Assets\Scripts\ScoreCounter.cs" />
     <Compile Include="Assets\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\gunangle.cs" />

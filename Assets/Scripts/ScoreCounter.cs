@@ -16,10 +16,9 @@ public class ScoreCounter : MonoBehaviour {
 	void Update () {
         PlayerScoreUI.text = PlayerScore.ToString();
     }
-    public void TakeScore(float score)
+    public void TakeScore(float score, int amountofkills)
     {
-        PlayerScore += score;
+        PlayerScore = PlayerScore + score * amountofkills;
         killed++;
-        
-    }
+     }
 }

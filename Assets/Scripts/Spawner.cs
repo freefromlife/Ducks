@@ -32,7 +32,6 @@ public class Spawner : MonoBehaviour {
             wheretospawn = new Vector2(transform.position.x, rand);
             var Duck = Instantiate(enemy, wheretospawn, Quaternion.identity);
             Duck.hunter = hunter;
-            Duck.SC = SC;
             var randspeed = Random.Range(minspeed, maxspeed);
             koef = SC.GetComponent<ScoreCounter>().killed *0.02f;
             Duck.speed = randspeed+koef;

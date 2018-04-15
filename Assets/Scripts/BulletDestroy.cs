@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletDestroy : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+    [SerializeField]
+    public GameObject SC;
+    public int KillCounter;
+    // Use this for initialization
+    void Start () {
         Destroy(gameObject, 5);
     }
 	
@@ -18,6 +20,15 @@ public class BulletDestroy : MonoBehaviour {
         if (!coll.isTrigger) // чтобы пуля не реагировала на триггер
         {
             Destroy(gameObject);
+        }
+        if (coll.tag == "Duck")
+        {
+            KillCounter++;
+            coll.GetComponent <Fly>().alive = false;
+            coll.GetComponent<Fly>().myAnimator.Play("Die");
+            coll.GetComponent<Fly>().myRigit.gravityScale = 2;
+            Destroy(coll, 5);
+            SC.GetComponent<ScoreCounter>().TakeScore(coll.GetComponent<Fly>().Score * Mathf.RoundToInt(coll.GetComponent<Fly>().speed), KillCounter);
         }
     }
 }
