@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletDestroy : MonoBehaviour {
-    [SerializeField]
     public GameObject SC;
+    public Rigidbody2D Rigidbody2D;
+    public CircleCollider2D CircleCollider2D;
     public int KillCounter;
     // Use this for initialization
     void Start () {
         Destroy(gameObject, 5);
     }
-	
+
 	// Update is called once per frame
 	void Update () {
-        
+
     }
     private void OnTriggerEnter2D(Collider2D coll)
     {

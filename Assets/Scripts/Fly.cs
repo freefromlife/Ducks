@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Fly : MonoBehaviour
 {
@@ -14,12 +12,14 @@ public class Fly : MonoBehaviour
     public Animator myAnimator;
     [SerializeField]
     public Rigidbody2D myRigit;
+
+    public BalloonHealth BalloonHealth;
+    public Balloon Balloon;
+
     public float speed;
     public float Score = 1;
     public GameObject destination;
     public bool alive = true;
-
-
 
     // Use this for initialization
     void Start()
@@ -31,21 +31,20 @@ public class Fly : MonoBehaviour
     void Update()
     {
         FlyToSpot(destination);
-
     }
+
     void OnTriggerEnter2D(Collider2D coll)
-    { 
-        if (coll.tag == "Ballon" && alive == true)
+    {
+        if (coll.gameObject == Balloon.gameObject && alive)
         {
             destination = OutOfScreenSpot;
             myAnimator.Play("FlyDown");
             Destroy(gameObject, 10);
             speed++;
-            coll.GetComponent<BallonHealth>().MinusBag();
-
+            BalloonHealth.MinusBag();
         }
-        
     }
+
     public void FlyToSpot( GameObject spot)
     {
         var delta = transform.position - spot.transform.position;

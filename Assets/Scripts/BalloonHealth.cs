@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class BallonHealth : MonoBehaviour {
+public class BalloonHealth : MonoBehaviour
+{
     public int AmountOfBags = 3;
     public GameObject gameover;
     public bool gameoverflag;
@@ -22,54 +21,77 @@ public class BallonHealth : MonoBehaviour {
     public int GetBestTime;
     public int GetBestKills;
 
-
-
+    public Balloon Balloon;
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         gameoverflag = false;
         StartTime = Time.time;
 
     }
 
     // Update is called once per frame
-    void Update() {
-        if (AmountOfBags <1)
+    void Update()
+    {
+        if (AmountOfBags < 1)
         {
-            GameIsOver();
+            ShowGameOver();
         }
+
         if (gameoverflag == false)
         {
             Seconds = Mathf.RoundToInt(Time.time - StartTime);
             GameTime.text = Seconds.ToString() + " s";
         }
     }
+
     public void MinusBag()
     {
         AmountOfBags--;
         GameObject.FindGameObjectWithTag("Bag").GetComponent<Rigidbody2D>().gravityScale = 3;
         Destroy(GameObject.FindGameObjectWithTag("Bag"), 5);
     }
-    public void GameIsOver()
+
+    public void ShowGameOver()
     {
         gameoverflag = true;
-        gameObject.GetComponent<Rigidbody2D>().gravityScale = -0.2f;
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Spawner"))
-        { Destroy(item); }
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Duck"))
-        { Destroy(item, 4); }
-        Destroy(gameObject, 5);
-        gameover.SetActive(true);
+
+        SaveProgress();
+        ShowUI();
+        PlayDeathAnimation();
+    }
+
+    private void SaveProgress()
+    {
         dataControl.SubmitNewPlayerTime(Seconds);
         dataControl.SubmitNewPlayerScore(SC.GetComponent<ScoreCounter>().PlayerScore);
         dataControl.SubmitNewPlayerKilles(SC.GetComponent<ScoreCounter>().killed);
-        ResultScore.text ="Score: "+ SC.GetComponent<ScoreCounter>().PlayerScore.ToString();
-        ResultKills.text ="Killed: "+ SC.GetComponent<ScoreCounter>().killed.ToString() + " ducks";
-        ResultTime.text = "Time: "+ Seconds.ToString() + " s";
-        BestScore.text ="Best score: "+ dataControl.GetHighestScore().ToString();
-        BestKills.text ="Best Ducks killed: "+ dataControl.GetBestKilled().ToString() + " ducks";
-        BestTime.text = "Best time: "+ dataControl.GetBestTime().ToString() + " s";
-
     }
 
+    private void PlayDeathAnimation()
+    {
+        Balloon.FlyTop();
+
+        foreach (var item in GameObject.FindGameObjectsWithTag("Spawner"))
+        {
+            Destroy(item);
+        }
+
+        foreach (var item in GameObject.FindGameObjectsWithTag("Duck"))
+        {
+            Destroy(item, 4);
+        }
+    }
+
+    private void ShowUI()
+    {
+        gameover.SetActive(true);
+        ResultScore.text = "Score: " + SC.GetComponent<ScoreCounter>().PlayerScore.ToString();
+        ResultKills.text = "Killed: " + SC.GetComponent<ScoreCounter>().killed.ToString() + " ducks";
+        ResultTime.text = "Time: " + Seconds.ToString() + " s";
+        BestScore.text = "Best score: " + dataControl.GetHighestScore().ToString();
+        BestKills.text = "Best Ducks killed: " + dataControl.GetBestKilled().ToString() + " ducks";
+        BestTime.text = "Best time: " + dataControl.GetBestTime().ToString() + " s";
+    }
 }

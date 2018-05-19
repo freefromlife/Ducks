@@ -1,59 +1,56 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class Fire : MonoBehaviour
 {
-    public bool gameoverflag;
-    public GameObject bullet; // префаб нашей пули
+    public BalloonHealth BalloonHealth;
+
+    public BulletDestroy bullet; // префаб нашей пули
+    private float cooldown;
     public Transform gunPoint; // точка рождения
-    private float curTimeout;
-    public GameObject SC;
     public Slider GunSelection;
     public GameObject gunSelectionImage;
     public GunsLib gunsLib;
+    public GameObject SC;
+    public SpriteRenderer WeaponRenderer;
+    public GunAngle GunAngle;
 
-    void Start()
+    public bool IsGameover
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = gunsLib.Images[Mathf.RoundToInt(GunSelection.value)];
+        get { return BalloonHealth.gameoverflag; }
+    }
+
+    private void Start()
+    {
+        WeaponRenderer.sprite = gunsLib.Images[Mathf.RoundToInt(GunSelection.value)];
         GunSelection.maxValue = gunsLib.Images.Length - 1;
     }
 
- 
 
-    void Update()
+    private void Update()
     {
-        gameoverflag = FindObjectOfType<BallonHealth>().gameoverflag;
-        if (Input.GetMouseButton(0) && gameoverflag==false)
+        if (cooldown > 0)
         {
-            CreateBullet(Mathf.RoundToInt( GunSelection.value));
+            cooldown -= Time.deltaTime;
         }
         else
         {
-            curTimeout = 100;
+            if (Input.GetMouseButton(0) && !IsGameover) CreateBullet(Mathf.RoundToInt(GunSelection.value));
         }
-        
-
     }
 
-    void CreateBullet(int index)
+    private void CreateBullet(int index)
     {
-        
-        curTimeout += Time.deltaTime;
-        if (curTimeout > gunsLib.fireRate[index])
-        {
-            curTimeout = 0;
-            GameObject clone = Instantiate(bullet, transform.position, Quaternion.identity) as GameObject;
-            clone.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(gunPoint.right * gunsLib.speed[index]);
-            clone.transform.right = gunPoint.right;
-            clone.GetComponent<CircleCollider2D>().radius = gunsLib.cal[index];
-            clone.GetComponent<BulletDestroy>().SC = SC;
-        }
+        cooldown = gunsLib.fireRate[index];
+        var clone = Instantiate(bullet, gunPoint.position, GunAngle.WeaponRoot.rotation);
+        clone.Rigidbody2D.velocity =
+            GunAngle.WeaponRoot.TransformDirection(Vector3.right*gunsLib.speed[index]);
+       clone.CircleCollider2D.radius = gunsLib.cal[index];
+        clone.SC = SC;
     }
+
     public void Slide()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = gunsLib.Images[Mathf.RoundToInt(GunSelection.value)];
-       // gunSelectionImage.GetComponent<Image>().sprite = gunsLib.Images[Mathf.RoundToInt(GunSelection.value)];
-       // gunSelectionImage.SetActive(true);
+        WeaponRenderer.sprite = gunsLib.Images[Mathf.RoundToInt(GunSelection.value)];
     }
 }
